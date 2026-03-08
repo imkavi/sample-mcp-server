@@ -1,0 +1,17 @@
+{
+  "name": "sample-mcp-server",
+  "version": "1.0.0",
+  "description": "A scalable MCP (Model Context Protocol) server starter project",
+  "type": "module",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node --experimental-vm-modules node_modules/.bin/jest"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
