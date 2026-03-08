@@ -119,15 +119,20 @@ To use this server with Claude Desktop:
 }
 ```
 
-Replace `/absolute/path/to/sample-mcp-server` with the actual path where you cloned the repo.
+> **Important:** `args` must point to `server.js` — not just the folder. For example, if you cloned to your home directory:
+> ```json
+> "args": ["/Users/your-username/sample-mcp-server/server.js"]
+> ```
 
 ### 3. Restart Claude Desktop
 
 The tools will appear automatically. You can now ask Claude things like:
 - *"What time is it on the server?"*
 - *"What's the weather in Tokyo?"*
-- *"Read the file package.json for me."*
+- *"Use the read_file tool to show me package.json"*
 - *"Show me the system info."*
+
+> **Tip:** For `read_file`, phrase the request so Claude knows to use the tool — e.g. *"use read_file to read…"* or *"call the read_file tool on…"*. Saying "read the file X" alone may cause Claude to ask you to upload a file instead.
 
 ---
 
@@ -310,7 +315,23 @@ For a deeper dive, see [docs/architecture.md](docs/architecture.md).
 
 **`Cannot find package '@modelcontextprotocol/sdk'`** — Run `npm install` first.
 
-**Tools not showing in Claude Desktop** — Check the `args` path in `claude_desktop_config.json` is the correct absolute path, then fully restart Claude Desktop.
+**Tools not showing in Claude Desktop** — Check the `args` path in `claude_desktop_config.json` is the correct absolute path to `server.js`, then fully restart Claude Desktop.
+
+**`Failed to spawn process: No such file or directory`** — Claude Desktop runs with a restricted PATH and may not find `node` if it was installed via Homebrew or nvm. Use the full absolute path to the node binary in `command`:
+```bash
+which node   # prints the full path, e.g. /usr/local/opt/node@22/bin/node
+```
+Then use that path in your config:
+```json
+{
+  "mcpServers": {
+    "sample-mcp-server": {
+      "command": "/usr/local/opt/node@22/bin/node",
+      "args": ["/absolute/path/to/sample-mcp-server/server.js"]
+    }
+  }
+}
+```
 
 **`read_file` returns "Access denied"** — The path you requested is outside the allowed base directory. Set `ALLOWED_READ_BASE_PATH` if you need access to a different directory.
 
